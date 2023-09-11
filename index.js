@@ -1,4 +1,4 @@
-function deleteItem(event){
+function deleteItem(event) {
     event.preventDefault();
 
     let name = event.target.userName.value;
@@ -8,36 +8,52 @@ function deleteItem(event){
     let obj = {
         Name: name,
         Email: email,
-        ContactNumber:contactNumber
+        ContactNumber: contactNumber
     }
 
-    localStorage.setItem('obj' ,JSON.stringify(obj));
+    localStorage.setItem(obj.Email, JSON.stringify(obj));
     showOnUserScreen(obj);
 
     event.target.reset();
-    
-
 
 }
 
-function showOnUserScreen(obj){
+function showOnUserScreen(obj) {
     let parentELement = document.getElementById('listOfItem');
     let childElement = document.createElement('li');
-    childElement.textContent = obj.Name +'- '+obj.Email+'- ' +obj.ContactNumber;
+    childElement.textContent = obj.Name + '- ' + obj.Email + '- ' + obj.ContactNumber;
     parentELement.appendChild(childElement);
 
-    let btn = document.createElement('button');
-    btn.textContent = 'Delete';
-    childElement.appendChild(btn);
+    let deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    childElement.appendChild(deleteBtn);
 
-    btn.addEventListener('click',removeItem)
-    
+    deleteBtn.addEventListener('click', function () {
+        removeList(childElement);
+        localStorage.removeItem(obj.Email); // Remove from localStorage
+    });
+
+
+    let editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    childElement.appendChild(editBtn);
+
+    editBtn.addEventListener('click', function () {
+        editItem(childElement);
+        localStorage.removeItem(obj.Email);
+    });
+
+
 }
 
 
 
-function removeItem(event) {
-  let listItem = event.target.parentElement;
-  let parentList = listItem.parentElement;
-  parentList.removeChild(listItem);
+function removeList(listItem) {
+    let parentList = listItem.parentElement;
+    parentList.removeChild(listItem);
 }
+function editItem(listItem) {
+    let parentList = listItem.parentElement;
+    parentList.removeChild(listItem);
+}
+
